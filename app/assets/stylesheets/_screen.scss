@@ -587,6 +587,10 @@ div#keycut-help {
   margin: 0;
   padding: 0;
   display: inline-block;
+
+  &.search-projects {
+    margin-top: 15px;
+  }
 }
 
 .list-group.list-group-root {
@@ -638,6 +642,12 @@ div#keycut-help {
   &:hover {
     text-decoration: none;
   }
+}
+
+
+.unstyled-input {
+  background: none;
+  border: none;
 }
 
 .teams, .projects {
