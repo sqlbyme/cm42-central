@@ -9,14 +9,13 @@ module.exports = Backbone.View.extend({
   },
 
   addBar: function(column) {
-    var that = this;
     var view = new EpicBarView({model: this.model}).render();
     this.appendViewToColumn(view, column);
   },
 
   addStory: function(story, column) {
     var StoryView = require('./story_view');
-    
+
     var view = new StoryView({model: story, isSearchResult: true}).render();
     this.appendViewToColumn(view, column);
     view.setFocus();
@@ -48,7 +47,7 @@ module.exports = Backbone.View.extend({
     $(".loading_screen").hide();
   },
 
-  doSearch: function(e) {
+  doSearch: function() {
     $(".loading_screen").show();
     var that = this;
     this.model.search.fetch({

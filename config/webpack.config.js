@@ -34,13 +34,15 @@ var config = {
       models: path.join(__dirname, '..', 'app/assets/javascripts/models'),
       templates: path.join(__dirname, '..', 'app/assets/javascripts/templates'),
       views: path.join(__dirname, '..', 'app/assets/javascripts/views'),
-      libs: path.join(__dirname, '..', 'app/assets/javascripts/libs')
+      libs: path.join(__dirname, '..', 'app/assets/javascripts/libs'),
+      components: path.join(__dirname, '..', 'app/assets/javascripts/components')
     }
   },
 
   module: {
     loaders: [
-      { test: /\.ejs$/, loader: 'ejs-compiled' }
+      { test: /\.ejs$/, loader: 'ejs-compiled' },
+      { test: /\.js$/, loader: 'babel', exclude: /node_modules/ }
     ]
   },
 

@@ -58,6 +58,7 @@ var Story = module.exports = Backbone.Model.extend({
   moveAfter: function(beforeId) {
     var before = this.collection.get(beforeId);
     var after = this.collection.next(before);
+    var afterPosition;
     if (typeof after == 'undefined') {
       afterPosition = before.position() + 2;
     } else {
@@ -73,6 +74,7 @@ var Story = module.exports = Backbone.Model.extend({
   moveBefore: function(afterId) {
     var after = this.collection.get(afterId);
     var before = this.collection.previous(after);
+    var beforePosition;
     if (typeof before == 'undefined') {
       beforePosition = 0.0;
     } else {
@@ -152,19 +154,14 @@ var Story = module.exports = Backbone.Model.extend({
     switch (this.get('state')) {
       case 'started':
         return ["finish"];
-        break;
       case 'finished':
         return ["deliver"];
-        break;
       case 'delivered':
         return ["accept", "reject"];
-        break;
       case 'rejected':
         return ["restart"];
-        break;
       case 'accepted':
         return [];
-        break;
       default:
         return ["start"];
     }
@@ -299,11 +296,13 @@ var Story = module.exports = Backbone.Model.extend({
   },
 
   sync: function(method, model, options) {
+    var documents;
+
     if( model.isReadonly ) {
       return true;
     }
 
-    var documents = options.documents;
+    documents = options.documents;
     if(!_.isUndefined(documents)) {
       if(documents && documents.length > 0 && documents.val()) {
         model.set('documents', JSON.parse(documents.val()));
@@ -311,7 +310,7 @@ var Story = module.exports = Backbone.Model.extend({
         model.set('documents', [{}]);
       }
     } else {
-      var documents = model.get('documents');
+      documents = model.get('documents');
       if(!_.isUndefined(documents)) {
         documents = _.map(documents, function(elem) {
           return elem["file"];

@@ -6,7 +6,6 @@ module.exports = Backbone.Model.extend({
   name: 'project',
 
   initialize: function(args) {
-
     this.maybeUnwrap(args);
 
     _.bindAll(this, 'updateChangesets');
@@ -78,7 +77,7 @@ module.exports = Backbone.Model.extend({
     var options = {
       type: 'GET',
       dataType: 'json',
-      success: function(resp, status, xhr) {
+      success: function(resp) {
         model.handleChangesets(resp);
       },
       data: {from: from, to: to},
