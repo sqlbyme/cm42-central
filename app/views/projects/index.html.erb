@@ -7,7 +7,7 @@
 <div id="projects" class="projects-list">
   <div class="row item">
     <div class="col-md-12">
-      <% if @projects.empty? %>
+      <% if @projects[:is_member].empty? %>
         <div class="col-md-6">
           <div class="simple-alert">
             <i class="mi alert-icon">error_outline</i>
@@ -30,7 +30,7 @@
           <% end %>
         </div>
       <% end %>
-      <div class="col-md-6 projects">
+      <div id="projects-search" class="col-md-6 projects">
 
         <div class="col-md-12">
           <%= form_tag '#', id: 'form_search', class: 'search-projects' do %>
@@ -49,19 +49,27 @@
           <% end %>
         </div>
 
-        <% if @projects.present? %>
-          <div class="col-md-12">
+        <% if @projects[:is_member].present? %>
+          <div
+            id="my-projects"
+            class="col-md-12"
+            data-projects="<%= @projects[:is_member].to_json %>"
+          >
             <div class="col-md-12">
-              <h4><i class="mi md-20 heading-icon">view_module</i> <%= t('projects.mine') %> | <%= @projects.size %></h4>
+              <h4><i class="mi md-20 heading-icon">view_module</i> <%= t('projects.mine') %> | <%= @projects[:is_member].size %></h4>
             </div>
-            <%= render 'project', projects: @projects, is_project_member: true %>
+
           </div>
         <% end %>
 
-        <% if @projects_without_current_user.present? %>
-          <div class="col-md-12">
+        <% if @projects[:without_current_user].present? %>
+          <div
+            id="not-my-projects"
+            class="col-md-12"
+            data-projects="<%= @projects[:without_current_user].to_json %>"
+          >
             <div class="col-md-12">
-              <h4><i class="mi md-20 heading-icon">person_outline</i> <%= t('projects.not_member_of') %> | <%= @projects_without_current_user.size %></h4>
+              <h4><i class="mi md-20 heading-icon">person_outline</i> <%= t('projects.not_member_of') %> | <%= @projects[:without_current_user].size %></h4>
               <h4>
                 <small>
                   <%= t('projects.you_are_not_a_member') %>
@@ -71,7 +79,6 @@
               </h4>
             </div>
 
-            <%= render 'project', projects: @projects_without_current_user, is_project_member: false %>
           </div>
         <% end %>
       </div>

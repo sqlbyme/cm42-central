@@ -9,7 +9,7 @@ class Project < ActiveRecord::Base
   friendly_id :name, use: :slugged
 
   JSON_ATTRIBUTES = [
-    "id", "iteration_length", "iteration_start_day", "start_date",
+    "id", "name" ,"iteration_length", "iteration_start_day", "start_date",
     "default_velocity"
   ].freeze
 

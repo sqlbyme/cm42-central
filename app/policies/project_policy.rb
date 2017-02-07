@@ -33,7 +33,7 @@ class ProjectPolicy < ApplicationPolicy
         current_team.projects
       else
         return Project.none unless current_team
-        current_user.projects.not_archived.where(id: current_team.projects.pluck(:id))
+        current_user.projects.where(id: current_team.projects.pluck(:id))
       end
     end
   end
