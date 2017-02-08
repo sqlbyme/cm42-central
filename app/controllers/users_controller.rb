@@ -61,7 +61,7 @@ class UsersController < ApplicationController
   end
 
   def set_project
-    @project = policy_scope(Project).friendly.find(params[:project_id])
+    @project = policy_scope(Project).not_archived.friendly.find(params[:project_id])
   end
 
 end
