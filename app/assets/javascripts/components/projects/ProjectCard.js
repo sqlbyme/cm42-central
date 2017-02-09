@@ -58,9 +58,21 @@ module.exports = function(props) {
 
         <div className="panel-body">
           <div className="col-md-6 col-xs-6 counter">
-            <span className="counter-description">Velocity</span>
-            <span className="counter-value">50</span>
+            <span className="counter-description">{ I18n.t('velocity') }</span>
+            <span className="counter-value">{ props.project.get('velocity') }</span>
           </div>
+
+          <div className="col-md-6 col-xs-6 counter">
+            <span className="counter-description">{ I18n.t('volatility') }</span>
+            <span className="counter-value">{ props.project.get('volatility') }</span>
+          </div>
+
+          <div className="col-md-12 members">
+            <ul className="member-list">
+              { props.project.get('users') }
+            </ul>
+          </div>
+
         </div>
       </div>
     </div>

@@ -367,4 +367,12 @@ module.exports = Backbone.Model.extend({
 
     this.iterations.push(iteration);
   }
-});
+},
+{
+  filters: [
+    'archived': 'Archived',
+    'not_archived': 'Not Archived',
+    'all_projects': 'All Projects'
+  ],
+}
+);

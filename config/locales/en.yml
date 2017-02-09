@@ -36,6 +36,9 @@ en:
   team: "Team"
   join: "Join"
   by_clicking: "By clicking the"
+  archived: "Archived"
+  not_archived: "Not Archived"
+  all_projects: "All Projects"
 
   save: "Save"
   cancel: "Cancel"

@@ -32,6 +32,9 @@ es:
   team: "Equipo"
   join: "Unirse"
   by_clicking: "Al hacer clic en"
+  archived: "Archivado"
+  not_archived: "No Archivado"
+  all_projects: "Todos los proyectos"
 
   save: "Guardar"
   delete: "Borrar"

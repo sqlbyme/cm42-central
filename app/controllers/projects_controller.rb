@@ -10,10 +10,14 @@ class ProjectsController < ApplicationController
 
     current_user_projects = policy_scope(Project)
 
-    @projects[:is_member] = Projects::ProjectsSerializer::from_collection(current_user_projects)
+    @projects[:is_member] = Projects::ProjectsSerializer::from_collection(
+      ProjectDecorator.decorate_collection(current_user_projects)
+    )
 
     @projects[:without_current_user] = Projects::ProjectsSerializer::from_collection(
-      current_team.projects.joinable.where.not(id: current_user.projects).order(:updated_at)
+      ProjectDecorator.decorate_collection(
+        current_team.projects.joinable.where.not(id: current_user.projects).order(:updated_at)
+      )
     )
 
     @activities_group = Activity.grouped_activities(current_user_projects, 1.week.ago)

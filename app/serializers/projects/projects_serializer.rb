@@ -7,9 +7,13 @@ class Projects::ProjectsSerializer
   attr_accessor :id,
     :name,
     :slug,
+    :archived_at,
     :path_to,
     :user,
-    :archived_at
+    :velocity,
+    :volatility,
+    :users,
+    :avatar
 
   def initialize(attrs = {})
     self.name = attrs[:name]
@@ -24,7 +28,10 @@ class Projects::ProjectsSerializer
     self.user = {
       singular: User.model_name.human,
       plural: User.model_name.human(count: 2)
-    }
+    },
+    self.velocity = attrs.velocity,
+    self.volatility = attrs.volatility
+    self.users = attrs.users(Project::MAX_MEMBERS_PER_CARD)
   end
 
   def to_json
@@ -33,7 +40,10 @@ class Projects::ProjectsSerializer
       slug: slug,
       path_to: path_to,
       user: user,
-      archived_at: archived_at
+      archived_at: archived_at,
+      velocity: velocity,
+      volatility: volatility,
+      users: users
     }
   end
 
@@ -42,6 +52,3 @@ class Projects::ProjectsSerializer
   end
 end
 
-# self.velocity = attrs.iteration_service(since: 4.months.ago).velocity
-# self.volatility = number_to_percentage(
-#   attrs.iteration_service(since: 4.months.ago).volatility * 100.0, precision: 0)

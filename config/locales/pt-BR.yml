@@ -32,6 +32,9 @@ pt-BR:
   team: "Equipe"
   join: "Juntar-se"
   by_clicking: "Clicando em"
+  archived: "Arquivados"
+  not_archived: "Não Arquivados"
+  all_projects: "Todos os Projetos"
 
   save: "Salvar"
   delete: "Apagar"

@@ -1,74 +1,46 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Project from 'models/project';
 import ProjectList from 'components/projects/ProjectList';
-import FilterBar from 'components/FilterBar';
 
 export default class ProjectSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible_projects: props.projects,
-      visible_projects_without_user: props.projects_without_user,
-      search: '',
-      filter: '',
+      visibleProjects: {
+        joined: props.projects.joined,
+        unjoined: props.projects.unjoined
+      }
     }
     this.handleSearch = this.handleSearch.bind(this);
   }
 
-  handleSearch(e) {
-    this.setState({ search: e.target.value });
+  filterProjects(projects, searchValue, filterValue) {
+    const projectsFiltered = projects.findByName(searchValue);
 
-    this.testsa();
-  }
-
-  searchProject(projects, searchValue, filterValue) {
-    const gProjects = projects.filter((project) => {
-      return this.findProjectByName(project.get('name'), searchValue);
-    });
-
-    console.log(filterValue);
-
-    return this.filterProject(gProjects, filterValue);
-  }
-
-  findProjectByName(name, value) {
-    return name.toLowerCase().includes(value.toLowerCase());
-  }
-
-  handleSearchFilter(e) {
-    this.setState({ filter: e.target.value });
-
-    this.testsa();
-  }
-
-  filterProject(projects, value) {
-    if (value == 'Archived') {
-      return projects.filter((project) => {
-        return project.get('archived_at') != null;
-      });
-    } else if (value == 'Not Archived') {
-      return projects.filter((project) => {
-        return project.get('archived_at') == null;
-      });
+    if (filterValue == 'archived') {
+      return projectsFiltered.archived();
+    } else if (filterValue == 'not_archived') {
+      return projectsFiltered.notArchived();
     }
 
-    return projects;
+    return projectsFiltered;
   }
 
-  testsa() {
+  handleSearch() {
+    const projectsSearch = this.refs.projectsSearch.value;
+    const projectsFilter = this.refs.projectsFilter.value;
     this.setState({
-      visible_projects: this.searchProject(this.props.projects, this.state.search, this.state.filter),
-      visible_projects_without_user: this.searchProject(this.props.projects_without_user, this.state.search, this.state.filter)
+      visibleProjects: {
+        joined: this.filterProjects(this.props.projects.joined, projectsSearch, projectsFilter),
+        unjoined: this.filterProjects(this.props.projects.unjoined, projectsSearch, projectsFilter)
+      }
     });
   }
 
-  componentWillUnmount() {
-    this.setDefaultFilter('Not Archived');
-  }
-  setDefaultFilter(value) {
-    this.setState({
-      visible_projects: this.filterProject(this.props.projects, value),
-      visible_projects_without_user: this.filterProject(this.props.projects_without_user, value)
+  filterOptions() {
+    return Project.filters.map(function(filter) {
+      return(<option key={ filter } value={ filter }>{ I18n.t(filter) }</option>);
     })
   }
 
@@ -83,7 +55,8 @@ export default class ProjectSearch extends React.Component {
                 <input
                   id="projects_search"
                   className="form-control"
-                  onChange={(e) => this.handleSearch(e)}
+                  onChange={this.handleSearch}
+                  ref="projectsSearch"
                   placeholder="Search projects"
                 />
 
@@ -91,19 +64,18 @@ export default class ProjectSearch extends React.Component {
                   <select
                     id="project_type"
                     className="unstyled-input"
-                    onChange={(e) => this.handleSearchFilter(e)}
+                    onChange={this.handleSearch}
+                    ref="projectsFilter"
                   >
-                    <option value="Not Archived">Not Archived</option>
-                    <option value="Archived">Archived</option>
-                    <option value="All Projects">All Projects</option>
+                  { this.filterOptions() }
                   </select>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <ProjectList title={ I18n.t('projects.mine') } projects={ this.state.visible_projects } />
-        <ProjectList title={ I18n.t('projects.not_member_of') } projects={ this.state.visible_projects_without_user }  />
+        <ProjectList title={ I18n.t('projects.mine') } projects={ this.state.visibleProjects.joined } />
+        <ProjectList title={ I18n.t('projects.not_member_of') } projects={ this.state.visibleProjects.unjoined } />
       </div>
     );
   }
